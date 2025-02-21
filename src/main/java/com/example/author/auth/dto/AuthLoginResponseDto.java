@@ -3,10 +3,10 @@ package com.example.author.auth.dto;
 import lombok.Getter;
 
 @Getter
-public class LoginResponseDto {
+public class AuthLoginResponseDto {
     private final Long id;
 
-    public LoginResponseDto(Long id) {
+    public AuthLoginResponseDto(Long id) {
         this.id = id;
     }
 }

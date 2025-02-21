@@ -18,9 +18,9 @@ public class Member {
     private String email;
     private String password;
 
-    public Member(String password, String email) {
-        this.password = password;
+    public Member(String email, String password) {
         this.email = email;
+        this.password = password;
     }
 
     public void update(String email, String password) {

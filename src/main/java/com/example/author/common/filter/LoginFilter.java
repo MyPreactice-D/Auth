@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class LoginFilter implements Filter {
 
-    private static final String[] WHITE_LIST = {"/", "/users/signup", "/login", "/logout"};
+    private static final String[] WHITE_LIST = {"/", "/signup", "/login", "/logout", "/h2-console*"};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

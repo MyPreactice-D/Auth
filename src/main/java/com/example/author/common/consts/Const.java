@@ -1,5 +1,5 @@
 package com.example.author.common.consts;
 
 public abstract class Const {
-    public static String LOGIN_MEMBER = "LOGIN_USER";
+    public static final String LOGIN_MEMBER = "LOGIN_MEMBER";
 }

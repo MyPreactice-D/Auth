@@ -1,16 +1,13 @@
 package com.example.author.auth.service;
 
 import com.example.author.auth.dto.AuthSignupRequestDto;
-import com.example.author.auth.dto.LoginRequestDto;
-import com.example.author.auth.dto.LoginResponseDto;
-import com.example.author.member.dto.MemberSaveRequestDto;
-import com.example.author.member.dto.MemberSaveResponseDto;
+import com.example.author.auth.dto.AuthLoginRequestDto;
+import com.example.author.auth.dto.AuthLoginResponseDto;
 import com.example.author.member.entity.Member;
 import com.example.author.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Service
 @RequiredArgsConstructor
@@ -24,10 +21,12 @@ public class AuthService {
         memberRepository.save(member);
     }
 
-    public LoginResponseDto login(LoginRequestDto requestDto) {
+    @Transactional
+    public AuthLoginResponseDto login(AuthLoginRequestDto requestDto) {
         Member member = memberRepository.findByEmail(requestDto.getEmail()).orElseThrow(
                 () -> new IllegalArgumentException("회원정보가 없음")
         );
-        return new LoginResponseDto(member.getId());
+
+        return new AuthLoginResponseDto(member.getId());
     }
 }

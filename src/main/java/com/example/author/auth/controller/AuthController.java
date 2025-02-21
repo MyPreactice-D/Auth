@@ -1,8 +1,8 @@
 package com.example.author.auth.controller;
 
 import com.example.author.auth.dto.AuthSignupRequestDto;
-import com.example.author.auth.dto.LoginRequestDto;
-import com.example.author.auth.dto.LoginResponseDto;
+import com.example.author.auth.dto.AuthLoginRequestDto;
+import com.example.author.auth.dto.AuthLoginResponseDto;
 import com.example.author.auth.service.AuthService;
 import com.example.author.common.consts.Const;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,8 +23,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public void login(@RequestBody LoginRequestDto requestDto, HttpServletRequest request) {
-        LoginResponseDto login = authService.login(requestDto);
+    public void login(@RequestBody AuthLoginRequestDto requestDto, HttpServletRequest request) {
+        AuthLoginResponseDto login = authService.login(requestDto);
 
         HttpSession session = request.getSession(); // 신규 세션 완성, 세션 쿠키 발급
         session.setAttribute(Const.LOGIN_MEMBER, login.getId());

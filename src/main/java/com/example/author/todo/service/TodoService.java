@@ -1,5 +1,7 @@
 package com.example.author.todo.service;
 
+import com.example.author.member.entity.Member;
+import com.example.author.member.repository.MemberRepository;
 import com.example.author.todo.dto.*;
 import com.example.author.todo.entity.Todo;
 import com.example.author.todo.repository.TodoRepository;
@@ -14,13 +16,19 @@ import java.util.List;
 public class TodoService {
 
     private final TodoRepository todoRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public TodoSaveResponseDto save(TodoSaveRequestDto requestDto) {
-        Todo todo = new Todo(requestDto.getContent());
+    public TodoSaveResponseDto save(Long userId, TodoSaveRequestDto requestDto) {
+
+        Member member = memberRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("사용자가 존재하지않음")
+        );
+
+        Todo todo = new Todo(requestDto.getContent(), member);
         todoRepository.save(todo);
 
-        return new TodoSaveResponseDto(todo.getId(), todo.getContent());
+        return new TodoSaveResponseDto(todo.getId(), todo.getContent(), member.getId(), member.getEmail());
     }
 
     @Transactional(readOnly = true)
@@ -40,7 +48,12 @@ public class TodoService {
     }
 
     @Transactional
-    public TodoUpdateResponseDto update(Long id, TodoUpdateRequestDto requestDto) {
+    public TodoUpdateResponseDto update(Long memberId,Long id, TodoUpdateRequestDto requestDto) {
+
+        if (!memberRepository.existsById(memberId)) {
+            throw new IllegalArgumentException("그런 유저 없습니다.");
+        }
+
         Todo todo = todoRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("ID가 없습니다.")
         );
@@ -50,7 +63,11 @@ public class TodoService {
     }
 
     @Transactional
-    public void deleteById(Long id) {
+    public void deleteById(Long memberId, Long id) {
+        if (!memberRepository.existsById(memberId)) {
+            throw new IllegalArgumentException("그런 유저 없습니다");
+        }
+
         if (!todoRepository.existsById(id)) {
              throw new IllegalArgumentException("ID가 없습니다");
         }
