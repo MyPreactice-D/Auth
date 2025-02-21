@@ -19,16 +19,16 @@ public class TodoService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public TodoSaveResponseDto save(Long userId, TodoSaveRequestDto requestDto) {
+    public TodoSaveResponseDto save(Long memberId, TodoSaveRequestDto requestDto) {
 
-        Member member = memberRepository.findById(userId).orElseThrow(
+        Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new IllegalArgumentException("사용자가 존재하지않음")
         );
 
         Todo todo = new Todo(requestDto.getContent(), member);
-        todoRepository.save(todo);
+        Todo save = todoRepository.save(todo);
 
-        return new TodoSaveResponseDto(todo.getId(), todo.getContent(), member.getId(), member.getEmail());
+        return new TodoSaveResponseDto(save.getId(), save.getContent(), member.getId(), member.getEmail());
     }
 
     @Transactional(readOnly = true)
